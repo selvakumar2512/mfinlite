@@ -1,0 +1,150 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Customers {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+	<div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Search Customers</h4>
+        </div>
+		<div class="card-body">
+				<form role="form" method="GET" action="">
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Personal Data</legend>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Customer ID</label>
+									<input type="text" class="form-control" name="customer_id">
+								</div>
+							</div>
+							<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">ID Number</label>
+									  <input type="text" class="form-control" name="id_number">
+									</div>
+								</div>
+						</div>	
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+						  		    <label class="bmd-label-floating">First Name</label>
+									<input type="text" class="form-control" name="first_name">
+								</div>
+							</div>
+							<div class="col-md-1"> </div>
+							<div class="col-md-5">
+								<div class="form-group">
+							 	    <label class="bmd-label-floating">Last Name</label>
+									<input type="text" class="form-control" name="last_name">
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Address Data</legend>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Village</label>
+									<input type="text" class="form-control" name="village">
+								</div>
+							</div>
+							<div class="col-md-1"> </div>
+							<div class="col-md-5">
+								<div class="form-group">
+						  		    <label class="bmd-label-floating">Taluk</label>
+									<input type="text" class="form-control" name="taluk">
+								</div>
+							</div>
+						</div>	
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+							 	    <label class="bmd-label-floating">District</label>
+									<input type="text" class="form-control" name="district">
+								</div>
+							</div>
+							<div class="col-md-1"> </div>
+							<div class="col-md-5">
+								<div class="form-group">
+							 	    <label class="bmd-label-floating">City</label>
+									<input type="text" class="form-control" name="city">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+							 	    <label class="bmd-label-floating">Postal Code</label>
+									<input type="text" class="form-control" name="postal_code">
+								</div>
+							</div>
+							<div class="col-md-1"> </div>
+							<div class="col-md-5">
+								<div class="form-group">
+							 	    <label class="bmd-label-floating">Region</label>
+									<input type="text" class="form-control" name="region">
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<div class="row">
+						<div class="col-md-5"></div>
+						<div class="col-md-5">
+							<button type="submit" name="save" class="btn btn-primary pull-left">Search</button>
+						</div>
+					</div>
+				</form>
+				<div class="row">
+					<div class="col-md-12">
+						<table id="customers" class="dataTable">
+							<thead class=" text-primary">
+								<th> Customer ID </th>
+								<th> First Name </th>
+								<th> Last Name </th>
+								<th> City </th>
+								<th> Mobile Number </th>
+							</thead>
+							<tbody>
+								{% for customer in customers %}
+									<tr>
+										<td> {{ customer.customer_id }} </td>
+										<td> {{ customer.first_name }} </td>
+										<td> {{ customer.last_name }} </td>
+										<td> {{ customer.perm_city }} </td>
+										<td> {{ customer.mobile_phone }} </td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+	</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      //init DateTimePickers
+      md.initFormExtendedDatetimepickers();
+	  $('#customers').DataTable( {
+				dom: 'Bfrtip',
+				buttons: [
+					'excel', 'pdf'
+				]
+			} );
+	});
+  </script>
+  
+{% endblock javascripts %}

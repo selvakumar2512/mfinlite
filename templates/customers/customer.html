@@ -1,0 +1,511 @@
+{% extends "layouts/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} Customers {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Add New Customer</h4>
+        </div>
+		<div class="card-body">
+			{% if new_customer %}
+					<div class="alert alert-success">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						  <i class="material-icons">close</i>
+						</button>
+						<span> {{ msg }} </span>
+					</div>
+			{% else %}
+					{% if msg %}
+						<div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							  <i class="material-icons">close</i>
+							</button>
+							<span> {{ msg }} </span>
+						</div>
+					{% endif %}
+			{% endif %}
+				<form role="form" method="post" action="">
+					{% csrf_token %}
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Master Data</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Client</label>
+							  {{ form.client_id }}
+							</div>
+						</div>
+					</div>	
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Customer ID</label>
+								{{ form.customer_id }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">External ID</label>
+							  {{ form.external_id }}
+							</div>
+						</div>
+					</div>		
+					</fieldset>
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Name Details</legend>					
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Title</label>
+							  {{ form.title }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">First Name</label>
+							  {{ form.first_name }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Middle Name</label>
+							  {{ form.middle_name }}
+							</div>
+						</div>
+					</div>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+								  <label class="bmd-label-floating">Last Name</label>
+								  {{ form.last_name }}
+								</div>
+							</div>
+							<div class="col-md-1"> </div>
+							<div class="col-md-5">
+								<div class="form-group">
+								  <label class="bmd-label-floating">Name at Birth</label>
+								  {{ form.name_at_birth }}
+								</div>
+							</div>
+						</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Full Name</label>
+							  {{ form.full_name }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Nick Name</label>
+							  {{ form.nick_name }}
+							</div>
+						</div>
+					</div>
+					</fieldset>
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Personal Details</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Gender</label>
+							  {{ form.gender }}
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Marital Status</label>
+							  {{ form.marital_status }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Date of Birth</label>
+							  {{ form.date_of_birth }}
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Date of Marriage</label>
+							  {{ form.date_of_marriage }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Birth Place</label>
+							  {{ form.birth_place }}
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Nationality</label>
+							  {{ form.nationality }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Occupation</label>
+							  {{ form.occupation }}
+							</div>
+						</div>
+					</div>
+					</fieldset>
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Identification Details</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">ID Type</label>
+									  {{ form.id_type }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">ID Number</label>
+									  {{ form.id_number }}
+									</div>
+								</div>
+							</div>
+					</fieldset>					
+					
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Contact Address</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Unit/House Number</label>
+									  {{ form.cont_house }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Building</label>
+									  {{ form.cont_building }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Street 1</label>
+									  {{ form.cont_street_1 }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Street 2</label>
+									  {{ form.cont_street_2 }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Village</label>
+									  {{ form.cont_village }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Taluk</label>
+									  {{ form.cont_taluk }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">City</label>
+									  {{ form.cont_city }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">District</label>
+									  {{ form.cont_district }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Postal Code</label>
+									  {{ form.cont_postal_code }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Region/State</label>
+									  {{ form.cont_region }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Country</label>
+									  {{ form.cont_country }}
+									</div>
+								</div>
+							</div>
+					</fieldset>
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Permanent Address</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Unit/House Number</label>
+									  {{ form.perm_house }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Building</label>
+									  {{ form.perm_building }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Street 1</label>
+									  {{ form.perm_street_1 }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Street 2</label>
+									  {{ form.perm_street_2 }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Village</label>
+									  {{ form.perm_village }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Taluk</label>
+									  {{ form.perm_taluk }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">City</label>
+									  {{ form.perm_city }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">District</label>
+									  {{ form.perm_district }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Postal Code</label>
+									  {{ form.perm_postal_code }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Region/State</label>
+									  {{ form.perm_region }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Country</label>
+									  {{ form.perm_country }}
+									</div>
+								</div>
+							</div>
+					</fieldset>
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Contact Details</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Telephone</label>
+									  {{ form.telephone }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Mobile Number</label>
+									  {{ form.mobile_phone }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Alternate Contact Number</label>
+									  {{ form.alternate_contact }}
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Email ID</label>
+									  {{ form.email_id }}
+									</div>
+								</div>
+							</div>
+					</fieldset>
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Relationship</legend>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Relationship Type</label>
+									{{ form.rel_type }}
+								</div>
+							</div>
+							<div class="col-md-1"></div>
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Title</label>
+									{{ form.rel_title }}
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">First Name</label>
+									{{ form.rel_first_name }}
+								</div>
+							</div>
+							<div class="col-md-1"></div>
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Middle Name</label>
+									{{ form.rel_middle_name }}
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Last Name</label>
+									{{ form.rel_last_name }}
+								</div>
+							</div>
+							<div class="col-md-1"></div>
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Full Name</label>
+									{{ form.rel_full_name }}
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Mobile Number</label>
+									{{ form.rel_mobile }}
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="form-fieldset">
+						<legend class="form-legend">Status Details</legend>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Status</label>
+									{{ form.status }}
+								</div>
+							</div>
+							<div class="col-md-1"></div>
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Date of Death</label>
+									{{ form.date_of_death }}
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Valid From</label>
+									{{ form.valid_from }}
+								</div>
+							</div>
+							<div class="col-md-1"></div>
+							<div class="col-md-5">
+								<div class="form-group">
+									<label class="bmd-label-floating">Valid To</label>
+									{{ form.valid_to }}
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<div class="row">
+						<div class="col-md-5"></div>
+						<div class="col-md-5">
+							<button type="submit" name="save" class="btn btn-primary pull-left">Save</button>
+						</div>
+					</div>
+				</form>
+		</div>
+	</div>
+
+      
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+{% endblock javascripts %}

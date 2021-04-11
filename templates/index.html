@@ -1,0 +1,223 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-primary card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">business_center</i>
+            </div>
+            <p class="card-category">No. of Loans Issued</p>
+            <h3 class="card-title">{{ loans }}
+            </h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">date_range</i> This Month
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-rose card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">local_atm</i>
+            </div>
+            <p class="card-category">Amount Disbursed</p>
+            <h3 class="card-title">&#8377 {{ disbursed }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">date_range</i> This Month
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-success card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">payments</i>
+            </div>
+            <p class="card-category">Revenue</p>
+            <h3 class="card-title">&#8377 {{ revenue }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">date_range</i> This Month
+            </div>
+          </div>
+        </div>
+      </div>
+		<div class="col-lg-3 col-md-6 col-sm-6">
+			<div class="card card-stats">
+				<div class="card-header card-header-warning card-header-icon">
+					<div class="card-icon">
+						<i class="material-icons">insights</i>
+					</div>
+					<p class="card-category">Forecast Collection</p>
+					<h3 class="card-title"> &#8377 {{ col_amount }} </h3>
+				</div>
+				<div class="card-footer">
+					<div class="stats">
+						<i class="material-icons">date_range</i> This Month
+					</div>
+				</div>
+			</div>
+		</div>	  
+    </div>
+	<div class="row">
+		<div class="col-lg-3 col-md-6 col-sm-6">
+			<div class="card card-stats">
+				<div class="card-header card-header-rose card-header-icon">
+					<div class="card-icon">
+						<i class="material-icons">account_balance</i>
+					</div>
+					<p class="card-category">Active Loans</p>
+					<h3 class="card-title"> {{ total_loans }}</h3>
+				</div>
+				<div class="card-footer">
+					<div class="stats">
+						<i class="material-icons">date_range</i> As at Today
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-6 col-sm-6">
+			<div class="card card-stats">
+				<div class="card-header card-header-primary card-header-icon">
+					<div class="card-icon">
+						<i class="material-icons">money</i>
+					</div>
+					<p class="card-category">Outstanding Principal in </p>
+					<h3 class="card-title"> &#8377 {{ out_amount }} </h3>
+				</div>
+				<div class="card-footer">
+					<div class="stats">
+						<i class="material-icons">date_range</i> As at Today
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-6 col-sm-6">
+			<div class="card card-stats">
+				<div class="card-header card-header-warning card-header-icon">
+					<div class="card-icon">
+						<i class="material-icons">monetization_on</i>
+					</div>
+					<p class="card-category">Outstanding Charges</p>
+					<h3 class="card-title"> &#8377 {{ chg_amount }} </h3>
+				</div>
+				<div class="card-footer">
+					<div class="stats">
+						<i class="material-icons">date_range</i> As at Today
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+          <div class="card-header card-header-danger card-header-icon">
+            <div class="card-icon">
+              <i class="material-icons">more_time</i>
+            </div>
+            <p class="card-category">Overdue</p>
+            <h3 class="card-title">&#8377 {{ overdue }}</h3>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">date_range</i> As at Today
+            </div>
+          </div>
+        </div>
+      </div>
+	</div>
+    <div class="row">
+		<div class="col-lg-12 col-md-12">
+			<div class="card">
+				<div class="card-header card-header-primary">
+					<h4 class="card-title">Revenue Summary</h4>
+					<p class="card-category">As at Today</p>
+				</div>
+				<div class="card-body table-responsive">
+					<table class="table table-hover">
+						<thead class="text-primary">
+							<th>Branch</th>
+							<th>Product</th>
+							<th>Active Loans</th>
+							<th>Principal Not Due</th>
+							<th>Charges Not Due</th>
+							<th>Principal OverDue</th>
+							<th>Charges OverDue</th>
+						</thead>
+						<tbody>
+							{% for oploan in oploans %}
+								<tr>
+									<td> {{ oploan.branch }} </td>
+									<td> {{ oploan.product }} </td>
+									<td> {{ oploan.loans }} </td>
+									<td> {{ oploan.prin_not_due|floatformat:2 }} </td>
+									<td> {{ oploan.chrg_not_due|floatformat:2 }} </td>
+									<td> {{ oploan.prin_due|floatformat:2 }} </td>
+									<td> {{ oploan.chrg_due|floatformat:2 }} </td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!--
+		<div class="col-lg-6 col-md-12">
+			<div class="card">
+				<div class="card-header card-header-warning">
+					<h4 class="card-title">Overdue Loans</h4>
+					<p class="card-category">As at Today</p>
+				</div>
+				<div class="card-body table-responsive">
+					<table class="table table-hover">
+						<thead class="text-primary">
+							<th>Loan No</th>
+							<th>Customer Name</th>
+							<th>Product</th>
+							<th>Overdue</th>
+						</thead>
+						<tbody>
+							{% for outloan in outloans %}
+								<tr>
+									<td> {{ outloan.loan_no }} </td>
+									<td> {{ outloan.name }} </td>
+									<td> {{ outloan.product }} </td>
+									<td> {{ outloan.total|floatformat:2 }} </td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		-->
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+{% endblock javascripts %}

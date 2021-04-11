@@ -1,0 +1,169 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Loans {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+	<div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Search Loans</h4>
+        </div>
+		<div class="card-body">
+			<form role="form" method="GET" action="">
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Customer Data</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Customer ID</label>
+								{{ searchform.customer }}
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Customer Name</label>
+								{{ searchform.full_name }}
+							</div>
+						</div>
+					</div>	
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Village</label>
+								{{ searchform.village }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+						  		<label class="bmd-label-floating">Taluk</label>
+								{{ searchform.taluk }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							 	<label class="bmd-label-floating">City</label>
+								{{ searchform.city }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							 	<label class="bmd-label-floating">District</label>
+								{{ searchform.district }}
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Loan Data</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							 	<label class="bmd-label-floating">Loan Number</label>
+								{{ searchform.loan_no }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							 	<label class="bmd-label-floating">External Loan Number</label>
+								{{ searchform.ext_loan_no }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							 	<label class="bmd-label-floating">Branch</label>
+								{{ searchform.branch }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							 	<label class="bmd-label-floating">Profit Centre</label>
+								{{ searchform.profitcentre }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+							 	<label class="bmd-label-floating">Cost Centre/Department</label>
+								{{ searchform.costcentre }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							 	<label class="bmd-label-floating">Product</label>
+								{{ searchform.product }}
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<div class="row">
+					<div class="col-md-5"></div>
+					<div class="col-md-5">
+						<button type="submit" name="search" class="btn btn-primary pull-left">Search</button>
+					</div>
+				</div>
+			</form>
+			<div class="row">
+				<div class="col-md-12">
+					<table id="loans" class="dataTable">
+						<thead class=" text-primary">
+							<th> Loan Number </th>
+							<th> Customer ID </th>
+							<th> Customer Name </th>
+							<th> Branch </th>
+							<th> Product </th>
+							<th> Amount Financed </th>
+							<th> Loan Status </th>
+						</thead>
+						<tbody>
+							{% for loan in loans %}
+								<tr>
+									<td> {{ loan.loan_no }} </td>
+									<td> {{ loan.customer.customer_id }} </td>
+									<td> {{ loan.customer.full_name }} </td>
+									<td> {{ loan.branch }} </td>
+									<td> {{ loan.product }} </td>
+									<td> {{ loan.amount_finance }} </td>				
+									<td> {{ loan.get_loan_status_display }} </td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      //init DateTimePickers
+      md.initFormExtendedDatetimepickers();
+	  $('#loans').DataTable( {
+				dom: 'Bfrtip',
+				buttons: [
+					'excel', 'pdf'
+				]
+			} );
+    });
+  </script>
+  
+{% endblock javascripts %}

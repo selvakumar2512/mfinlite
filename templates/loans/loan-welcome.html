@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+	<head>
+		{% load static %}
+		<meta charset="utf-8">
+		<style>
+	
+			@page {
+				size: a4 portrait;
+				margin:1cm;
+				
+				@font-face {
+					font-family: Oswald;
+					src: url( '/static/fonts/Oswald-Regular.ttf' );
+				}
+				
+				@font-face {
+					font-family: Roboto;
+					src: url( '/static/fonts/Roboto-Regular.ttf' );
+				}
+				
+				@frame header_frame {   /* Static Frame */       
+					-pdf-frame-content: header_content;
+					left: 30pt; 
+					width: 532pt; 
+					top: 30pt; 
+					height: 70pt;
+				}
+
+				@frame footer_frame {    /* Static Frame */       
+					-pdf-frame-content: footer_content;
+					left: 30pt; 
+					width: 532pt; 
+					top: 772pt; 
+					height: 70pt;
+				}
+				
+				@frame logo {             /* Static Frame */
+					-pdf-frame-content: logo;
+					left: 30pt;
+					top: 30pt;
+				}
+				
+				@frame company {
+					-pdf-frame-content: company;
+					left: 80pt;
+					top: 34pt;
+					margin-left: 1rem;			
+				}
+				
+				@frame date {
+					-pdf-frame-content: date;
+					top: 40pt;
+					left: 500pt;
+				}	
+				
+				@frame customer {
+					-pdf-frame-content: customer;
+					left: 30pt; 
+					width: 532pt; 
+					top: 100pt;
+				}
+				
+				@frame auto_message {
+					-pdf-frame-content: auto_message;
+					left: 30pt; 
+					width: 532pt; 
+					top: 700pt;
+				}
+				
+				@frame content_frame {          
+					left: 30pt; 
+					width: 532pt; 
+					top: 250pt; 
+				}
+				
+			}
+			
+			h1 {
+				color: #D00693;
+				font-family: Oswald;
+				font-size: 2.000rem;
+			}
+
+			h2 {
+				font-family: Oswald;
+				font-size: 1.250rem;
+			}
+			
+			h3 {
+				font-family: Oswald;
+				font-size: 1.200rem;
+			}
+			
+			h4 {
+				font-family: Oswald;
+				font-size: 1.100rem;
+			}
+			
+			customer {
+				font-family: Roboto;
+			    font-size: 1.200rem;
+				padding-left: 20px;
+			}
+								
+			para {
+				white-space: pre-line;
+			    font-size: 1.200rem;
+				text-align: justify;
+				text-justify: inter-word;
+			}
+		
+		</style>
+		<title>Loans - Welcome Letter</title>
+		<meta name="description" content="Welcome">
+	</head>
+
+	<body>
+		<div id="header_content" align="left">  
+			<img id="logo" src="{% static 'assets/img/client_logo.png' %}" width="60" height="40" />
+			<h1 id="company"> Bharath Capital Finance </h1>
+			<h4 id="date" > Date : {{ today }} </h4>
+		</div>
+		<div id="customer">
+			<h3> Loan Disbursal Date: {{ loanobj.disbursal_date }} </h3>
+			<h3> To, </h3>
+			<customer>
+					{{ loanobj.customer.full_name }}  	 												<br> 
+					{% if loanobj.customer.cont_house %} 		{{ loanobj.customer.cont_house }} 				{% endif %}
+					{% if loanobj.customer.cont_building %} 	{{ loanobj.customer.cont_building }} 	<br> 	{% endif %}	
+					{% if loanobj.customer.cont_street_1 %} 	{{ loanobj.customer.cont_street_1 }} 	<br> 	{% endif %}
+					{% if loanobj.customer.cont_street_2 %} 	{{ loanobj.customer.cont_street_2 }} 	<br> 	{% endif %}
+					{% if loanobj.customer.cont_village %} 		{{ loanobj.customer.cont_village }} 	<br> 	{% endif %}
+					{% if loanobj.customer.cont_taluk %} 		{{ loanobj.customer.cont_taluk }} 		<br> 	{% endif %}
+					{% if loanobj.customer.cont_district %} 	{{ loanobj.customer.cont_district }} 	<br> 	{% endif %}
+					{% if loanobj.customer.cont_city %} 		{{ loanobj.customer.cont_city }} 		- 		{% endif %}
+					{% if loanobj.customer.cont_postal_code %} 	{{ loanobj.customer.cont_postal_code }} <br> 	{% endif %}
+					{% if loanobj.customer.cont_region %} 		{{ loanobj.customer.cont_region }} 		<br> 	{% endif %}
+					{% if loanobj.customer.mobile_phone %} 		{{ loanobj.customer.mobile_phone }} 	<br> 	{% endif %}
+			</customer>
+		</div>
+
+		<para> 
+			Dear Customer,
+			<br> <br>
+			Welcome to Bharath Captial Finance and thank you for choosing us for your <b> {{ loanobj.product.product_name }}. </b>
+			<br> <br>
+			We are pleased to inform you that your loan <b> Rs. {{ loanobj.amount_finance }} </b> has been disbursed and your 
+			<b> {{ loanobj.product.product_name }} </b> Account Number is {{ loanobj.loan_no }}.
+			<br> <br>
+			{% if loanobj.instalment_type == 'M' %}
+				As you are aware, we will present the installment cheque on the <b> {{ loanobj.due_date }} </b> of every <b>Month</b>. Please ensure that
+				your bank account is adequately funded. This will avoid levy of additional charges for non-receipt of payment.
+			{% elif loanobj.instalment_type == 'Q' %}
+				As you are aware, we will present the installment cheque on the <b> {{ loanobj.due_date }} </b> of every <b>Quarter</b>. Please ensure that
+				your bank account is adequately funded. This will avoid levy of additional charges for non-receipt of payment.
+			{% else %}
+				As you are aware, we will collect the installment on every Week. Please ensure to pay the installment on time.
+				This will avoid levy of additional charges for non-receipt of payment.
+			{% endif %}
+			<br> <br>
+			Your Installment amount is <b> Rs. {{ inst_amount }} </b> and repayment will start from {{ loanobj.instalment_start }}.
+			<br> <br>
+			If you require any further details on your <b> {{ loanobj.product.product_name }} </b> Account, please contact us any of our branch
+			and/or telephone number given below. Our customer service representatives will be glad to assist you.
+			<br> <br>
+			We value your relationship with us  and assure you of our best services always.
+			<br> <br> <br>
+		</para>
+		<h2> 
+			Best Regards,
+			<br> <br>
+			Bharath Captial Finance
+		</h2>
+    	
+		<div id="auto_message">
+			<h3 align="center">This is a computer-generated document hence does not require any signature</h3>
+		</div>
+		<div id="footer_content" align="center"> <hr>
+			<b> Bharath Capital Finance </b>
+			<br>Please quote your LOAN Account Number whenever you contact us.
+			<br> Regd Off : C36/4, Hotel Bismi Complex, Pallivasal Street, Opp. PF Office
+			<br> N.G.O.'B' Colony, Tirunelveli - 627007
+			<br> PH: +919488210098
+		</div>
+	</body>
+</html>

@@ -1,0 +1,157 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Loans {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+	<div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">ForeClosure</h4>
+        </div>
+		<div class="card-body">
+			{% if msg %}
+				<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<i class="material-icons">close</i>
+					</button>
+					<span> {{ msg }} </span>
+				</div>
+			{% endif %}	
+			<form role="form" name="Get_Form" method="GET" action="">
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Loan Master</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Loan Number</label>
+								<input type="text" class="form-control" name="loan_no">
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-2">
+							<button type="submit" name="get_loan" class="btn btn-primary pull-left">Get Loan</button>								
+						</div>
+					</div>
+				</fieldset>
+			</form>
+			<form role="form" method="post" action="">
+				{% csrf_token %}
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">ForeClosure Details</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Loan Number</label>
+								{{ form.loan_no }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Outstanding Amount</label>
+								{{ form.os_amount }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">ForeClosure Charges</label>
+								{{ form.closure_charges }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Total Amount</label>
+								{{ form.total_amount }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Payment Mode</label>
+								{{ form.payment_mode }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Payment Date</label>
+								{{ form.payment_date }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Payment/Cheque Number</label>
+								{{ form.payment_no }}
+							</div>
+						</div>	
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Bank Name</label>
+								{{ form.cheque_bank }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Invoice Number</label>
+								{{ form.invoice_no }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Invoice Reference</label>
+								{{ form.invoice_reference }}
+							</div>
+						</div>
+						<input id="transno" name="transno" type="hidden">
+					</div>
+				</fieldset>
+				<div class="row">
+					<div class="col-md-5"></div>
+					<div class="col-md-5">
+						<button type="submit" name="collect" class="btn btn-primary pull-left">ForeClose Loan</button>
+					</div>
+				</div>
+			</form>			
+		</div>
+	</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+	
+	function calc_total_amount() 
+	{
+		var closure = $("#id_closure_charges").val();
+		var os      = $("#id_os_amount").val();
+		var total   = parseFloat(closure) + parseFloat(os);
+		$("#id_total_amount").val( total.toFixed(2) );
+	}
+	
+    $(document).ready(function() {
+      //init DateTimePickers
+      md.initFormExtendedDatetimepickers();
+	  calc_total_amount();
+	// Calculate Total Amount
+	$("#id_closure_charges").on("change", function() { calc_total_amount(); }	);
+	
+    });
+  </script>
+  
+{% endblock javascripts %}

@@ -1,0 +1,707 @@
+{% extends "layouts/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} Loans {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Add New Loan</h4>
+        </div>
+		<div class="card-body">
+			{% if new_loan %}
+					<div class="alert alert-success">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						  <i class="material-icons">close</i>
+						</button>
+						<span> {{ msg }} </span>
+					</div>
+			{% else %}
+					{% if msg %}
+						<div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							  <i class="material-icons">close</i>
+							</button>
+							<span> {{ msg }} </span>
+						</div>
+					{% endif %}
+			{% endif %}	
+
+			<form role="form" method="post" action="">
+				{% csrf_token %}
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Loan Master</legend>
+					<div class="row">
+						<div class="col-md-5" style="display: flex; justify-content: flex-end">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Client</label>
+							  {{ loanform.client_id }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5" style="display: flex; justify-content: flex-end">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Profit Centre</label>
+							  {{ loanform.profitcentre }}
+							</div>
+						</div>
+					</div>	
+					<div class="row">						
+						<div class="col-md-5" style="display: flex; justify-content: flex-end">
+							<div class="form-group">
+								<label class="bmd-label-floating">Cost Centre/Department</label>
+								{{ loanform.costcentre }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5" style="display: flex; justify-content: flex-end">
+							<div class="form-group">
+								<label class="bmd-label-floating">Branch</label>
+								{{ loanform.branch }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5" style="display: flex; justify-content: flex-end">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Product</label>
+							  {{ loanform.product }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5" style="display: flex; justify-content: flex-end">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Currency</label>
+							  {{ loanform.currency }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Loan Number</label>
+								{{ loanform.loan_no }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">External Loan Number</label>
+							  {{ loanform.ext_loan_no }}
+							</div>
+						</div>
+					</div>					
+				</fieldset>
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Applicant Details</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Customer ID</label>
+								{{ loanform.customer }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Customer Name</label>
+							  {{ loanform.customer_name }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Application No.</label>
+								{{ loanform.application_no }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Application Date</label>
+							  {{ loanform.application_date }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Bank Name</label>
+								{{ loanform.bank_name }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Bank Branch</label>
+							  {{ loanform.bank_branch }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Bank IFSC Code</label>
+								{{ loanform.bank_ifsc }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Bank Account Number</label>
+							  {{ loanform.bank_account }}
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Payment & Charges</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Amount Financed</label>
+								{{ loanform.amount_finance }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Service Charges</label>
+							  {{ loanform.service_charges }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">GST Charges</label>
+								{{ loanform.gst_charges }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">VAT Charges</label>
+							  {{ loanform.vat_charges }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">CESS Charges</label>
+								{{ loanform.cess_charges }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Other Charges</label>
+							  {{ loanform.other_charges }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Amount Disbursed</label>
+								{{ loanform.amount_disburse }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Principal Outstanding</label>
+							  {{ loanform.principal_os }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">LPP Outstanding</label>
+								{{ loanform.latepayment_os }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">CBC Outstanding</label>
+							  {{ loanform.cbc_os }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">First Instalment Amount</label>
+								{{ loanform.amount_first_instal }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Interest Rate</label>
+							  {{ loanform.interest_rate }}
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Instalment Details</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Disbursal Date</label>
+								{{ loanform.disbursal_date }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Interest Start Date</label>
+							  {{ loanform.interest_start }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Due Date</label>
+								{{ loanform.due_date }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Instalment Type</label>
+							  {{ loanform.instalment_type }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Instalment Start Date</label>
+								{{ loanform.instalment_start }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Instalment End Date</label>
+							  {{ loanform.instalment_end }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Payment Mode</label>
+								{{ loanform.payment_mode }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">First Payment Mode</label>
+							  {{ loanform.first_payment }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Total Instalments</label>
+								{{ loanform.total_instalments }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Advance Instalments Paid</label>
+							  {{ loanform.advance_instalments }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Paid Instalments</label>
+								{{ loanform.paid_instalments }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Overdue Instalments</label>
+							  {{ loanform.overdue_instalments }}
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Asset Details</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Asset Number</label>
+								{{ assetform.asset_no }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Asset Description</label>
+							  {{ assetform.asset_desc }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Invoice Number</label>
+								{{ assetform.invoice_no }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Invoice Date</label>
+							  {{ assetform.invoice_date }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Make</label>
+								{{ assetform.make }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Model</label>
+							  {{ assetform.model }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Chasis Number</label>
+								{{ assetform.chasis_no }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Engine Number</label>
+							  {{ assetform.engine_no }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Color</label>
+								{{ assetform.color }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Quantity</label>
+							  {{ assetform.quantity }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Year</label>
+								{{ assetform.year }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Registration Number</label>
+							  {{ assetform.registration_no }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">RTO</label>
+								{{ assetform.rto }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Supplier</label>
+							  {{ assetform.supplier }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Category</label>
+								{{ assetform.category }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Invoice Remark</label>
+							  {{ assetform.invoice_remark }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Sales Date</label>
+								{{ assetform.sales_date }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Reposession Date</label>
+							  {{ assetform.reposession_date }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">IMEI 1</label>
+								{{ assetform.imei1 }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">IMEI 2</label>
+							  {{ assetform.imei2 }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Asset Cost</label>
+								{{ assetform.asset_cost }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Blue Book Value</label>
+							  {{ assetform.blue_book_value }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Value</label>
+								{{ assetform.value }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Sales Value</label>
+							  {{ assetform.sales_value }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Delivery Order</label>
+								{{ assetform.delivery_order }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Delivery Order Date</label>
+							  {{ assetform.do_date }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Regd. Remark</label>
+								{{ assetform.regd_remark }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">First Inspect Date</label>
+							  {{ assetform.first_inspect_date }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">RC Status</label>
+								{{ assetform.rc_status }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">RC Status Update Date</label>
+							  {{ assetform.rcsu_date }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">RBI Code</label>
+								{{ assetform.rbi_code }}
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Status</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Disbursal Status</label>
+								{{ loanform.disbursal_status }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+							  <label class="bmd-label-floating">Loan Status</label>
+							  {{ loanform.loan_status }}
+							</div>
+						</div>
+					</div>
+				</fieldset>
+				<div class="row">
+					<div class="col-md-5"></div>
+					<div class="col-md-5">
+						<button type="submit" name="create_loan" class="btn btn-primary pull-left">Create Loan</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+      
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+	// Date Format
+	Date.prototype.toInputFormat = function() {
+       var yyyy = this.getFullYear().toString();
+       var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+       var dd  = this.getDate().toString();
+       return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+    };
+	// Calculate Amount Disbursed
+	function calc_amount_disburse()
+	{
+		$("#id_amount_disburse").val($("#id_amount_finance").val() - 
+									 $("#id_service_charges").val() -
+									 $("#id_gst_charges").val() -
+									 $("#id_vat_charges").val() -
+									 $("#id_cess_charges").val() -
+									 $("#id_other_charges").val() );		
+	}
+	// Add Months to Date
+	Date.isLeapYear = function (year) { 
+		return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)); 
+	};
+
+	Date.getDaysInMonth = function (year, month) {
+		return [31, (Date.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+	};
+
+	Date.prototype.isLeapYear = function () { 
+		return Date.isLeapYear(this.getFullYear()); 
+	};
+
+	Date.prototype.getDaysInMonth = function () { 
+		return Date.getDaysInMonth(this.getFullYear(), this.getMonth());
+	};
+
+	Date.prototype.addMonths = function (value) {
+		var n = this.getDate();
+		this.setDate(1);
+		this.setMonth(this.getMonth() + value);
+		this.setDate(Math.min(n, this.getDaysInMonth()));
+		return this;
+	};
+	// Calculate Instalment Start Date
+	function calc_instal_start() {
+		var due = $("#id_due_date").val();
+		var date = new Date($("#id_disbursal_date").val());
+		var inst_start = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+		var new_start  = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+		if (due == 0) { due = date.getDate() }
+		new_start.setDate(due);
+		if (new_start < inst_start) { new_start.addMonths(1) }
+		$("#id_instalment_start").val(new_start.toInputFormat());
+		//$("#id_paid_instalments").val(due);
+	}
+	// Calculate Instalment End Date
+	function calc_instal_end()
+	{
+		var date = new Date($("#id_instalment_start").val()),
+			format_date = new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+            freq = $("#id_instalment_type").val(),
+			total_instal = parseInt($("#id_total_instalments").val()),
+			days;
+		if 		(freq == "W") 	{ days = 7 * total_instal; date.setDate(date.getDate() + days); }
+		else if (freq == 'B') 	{ days = 14 * total_instal; date.setDate(date.getDate() + days); }
+		else if (freq == 'M') 	{ format_date.addMonths((total_instal - 1)); date = format_date; }
+		else if (freq == 'Q') 	{ months = 3 * (total_instal - 1); format_date.addMonths(months); date = format_date; }
+		$("#id_instalment_end").val(date.toInputFormat());
+	}
+	// Standard Function
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+	  // Calculate Amount Disbursed
+	  $("#id_amount_finance").keyup(function() 			{ calc_amount_disburse(); }	);
+	  $("#id_service_charges").keyup(function() 		{ calc_amount_disburse(); }	);
+	  $("#id_gst_charges").keyup(function() 			{ calc_amount_disburse(); }	);
+	  $("#id_vat_charges").keyup(function() 			{ calc_amount_disburse(); }	);
+	  $("#id_cess_charges").keyup(function() 			{ calc_amount_disburse(); }	);
+	  $("#id_other_charges").keyup(function() 			{ calc_amount_disburse(); }	);
+	  // Calculate Instalment Start Date
+	  $("#id_due_date").on("change", function() 		{ calc_instal_start(); calc_instal_end(); }	);
+	  // Calculte Instalment End Date
+	  $("#id_total_instalments").keyup(function() 		{ calc_instal_end(); }	);
+	  $("#id_instalment_type").on("change", function() 	{ calc_instal_end(); }	);
+	  $("#id_instalment_start").on("change", function() { calc_instal_end(); }	);
+    });
+  </script>
+
+{% endblock javascripts %}

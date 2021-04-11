@@ -1,0 +1,202 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Loans {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+	<div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Payment Collection</h4>
+        </div>
+		<div class="card-body">
+			<form role="form" name="Get_Form" method="GET" action="">
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Loan Master</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Loan Number</label>
+								<input type="text" class="form-control" name="loan_no">
+							</div>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-2">
+							<button type="submit" name="get_loan" class="btn btn-primary pull-left">Get Loan</button>								
+						</div>
+					</div>
+				</fieldset>
+			</form>
+			<form role="form" method="post" action="">
+				{% csrf_token %}
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Payment Details</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Loan Number</label>
+								{{ form.loan_no }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Transaction Type</label>
+								{{ form.transaction_type }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Transaction</label>
+								{{ form.transaction_no }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Payment Mode</label>
+								{{ form.payment_mode }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Payment Date</label>
+								{{ form.payment_date }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Payment/Cheque Number</label>
+								{{ form.payment_no }}
+							</div>
+						</div>	
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Bank Name</label>
+								{{ form.cheque_bank }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Total Amount</label>
+								{{ form.total_amount }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Paid Amount</label>
+								{{ form.paid_amount }}
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Invoice Number</label>
+								{{ form.invoice_no }}
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Invoice Reference</label>
+								{{ form.invoice_reference }}
+							</div>
+						</div>
+						<input id="transno" name="transno" type="hidden">
+					</div>
+				</fieldset>
+				<div class="row">
+					<div class="col-md-5"></div>
+					<div class="col-md-5">
+						<button type="submit" name="collect" class="btn btn-primary pull-left">Collect Payment</button>
+					</div>
+				</div>
+			</form>			
+		</div>
+	</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      //init DateTimePickers
+      md.initFormExtendedDatetimepickers();
+	 // Get transaction Numbers
+	 function get_trans_no(loan_no,trans_type) { 
+		$.ajax( { 
+		type: 'GET',
+		url: "{% url 'loans:get_trans' %}",
+		dataType: 'json',
+		data: {"loan_no": loan_no, "transaction_type": trans_type},
+		success: function (response) {
+			 if (response) {
+				$("#id_transaction_no").empty()  // Use to empty the select
+				// Now we append the Transaction No we've received
+                        for(var i=0;i < response.trans.length;i++){
+                            $('#id_transaction_no').append($('<option>', { 
+                                value: response.trans[i]['id'],
+                                text: response.trans[i]['name'] 
+                        }
+						)); }
+				try {
+					$("#transno").val(response.trans[0]['id']);
+					get_total_amount(); 
+				} 
+				catch(err) { $("#id_total_amount").val(''); }
+			 } else{ $("#id_total_amount").val('0.00'); }
+		}, 
+		error: function(response){ alert('No Trans No'); }
+		} );
+	 }
+	 
+	 // Get Total Amount
+	 function get_total_amount(){
+		var loan_no 	= $("#id_loan_no").val();
+		var trans_type 	= $("#id_transaction_type").val();
+		if($("#id_transaction_no").val()){
+            trans_no = $("#id_transaction_no").val();
+        } else{
+            trans_no = $("#transno").val();
+        }
+		$.ajax( { 
+		type: 'GET',
+		url: "{% url 'loans:get_amount' %}",
+		dataType: 'json',
+		data: {"loan_no": loan_no, "transaction_type": trans_type, "transaction_no": trans_no},
+		success: function (response) {
+			if (response) { $("#id_total_amount").val(response); }
+			else { $("#id_total_amount").val('0.00'); }
+		}
+		} );
+	 }
+	 // Get Transaction Number and Total Amount
+	 $("#id_transaction_type").on("change", function() {
+		var trans_type = $(this).val();
+		var loan_no = $("#id_loan_no").val();
+		get_trans_no(loan_no,trans_type);
+	 }); 
+	 	// Get Total Amount
+	 $("#id_transaction_no").on("change", function() { 
+		get_total_amount();
+	 });
+    });
+  </script>
+  
+{% endblock javascripts %}

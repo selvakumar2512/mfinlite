@@ -1,0 +1,355 @@
+<!doctype html>
+<html>
+	<head>
+		{% load static %}
+		<meta charset="utf-8">
+		<style>
+	
+			@page {
+				size: a4 portrait;
+				margin:1cm;
+				
+				@font-face {
+					font-family: Oswald;
+					src: url( '/static/fonts/Oswald-Regular.ttf' );
+				}
+				
+				@font-face {
+					font-family: Roboto;
+					src: url( '/static/fonts/Roboto-Regular.ttf' );
+				}
+				
+				@frame header_frame {   /* Static Frame */       
+					-pdf-frame-content: header_content;
+					left: 30pt; 
+					width: 532pt; 
+					top: 30pt; 
+					height: 70pt;
+				}
+
+				@frame footer_frame {    /* Static Frame */       
+					-pdf-frame-content: footer_content;
+					left: 30pt; 
+					width: 532pt; 
+					top: 772pt; 
+					height: 70pt;
+				}
+				
+				@frame logo {             /* Static Frame */
+					-pdf-frame-content: logo;
+					left: 30pt;
+					top: 30pt;
+				}
+				
+				@frame company {
+					-pdf-frame-content: company;
+					left: 80pt;
+					top: 34pt;
+					margin-left: 1rem;			
+				}
+				
+				@frame date {
+					-pdf-frame-content: date;
+					top: 40pt;
+					left: 500pt;
+				}	
+				
+				@frame headtable {
+					-pdf-frame-content: headtable;
+					left: 30pt;
+					top: 70pt;
+					width: 532pt;
+					height: 40pt;
+					border: 0.5px solid black;
+				}
+				
+				@frame customer {
+					-pdf-frame-content: customer;
+					left: 30pt;
+					top: 110pt;
+					width: 232pt;
+					height: 135pt;
+					padding: 5pt;
+					border: 0.5px solid black;
+				}
+				
+				@frame loan {
+					-pdf-frame-content: loan;
+					left: 262pt;
+					top: 110pt;
+					width: 300pt;
+					height: 135pt;
+					padding: 5pt;
+					border: 0.5px solid black;
+				}
+				
+				@frame schedule {
+					-pdf-frame-content: schedule;
+					left: 30pt;
+					top: 250pt;
+					width: 532pt;
+					height: 45pt;
+					padding: 5pt;
+				}
+
+				@frame content_frame {          
+					left: 30pt; 
+					width: 532pt; 
+					top: 300pt; 
+				}
+				
+			}
+			
+			h1 {
+				color: #D00693;
+				font-family: Oswald;
+				font-size: 2.000rem;
+			}
+
+			h2 {
+				color: #002060;
+				font-family: Roboto;
+				font-size: 1.750rem;
+				padding: 0.625rem 0;
+				margin-left: 1rem;
+				text-align: center;
+			}
+			
+			h3 {
+				font-family: Oswald;
+				font-size: 1.120rem;
+				margin-left: 1rem;
+				text-align: center;
+			}
+			
+			h4 {
+				font-size: 1.120rem;
+				text-align: right;
+				padding-left: 50px;
+			}
+			
+			h5 {
+				font-family: Oswald;
+				font-size: 1.120rem;
+				text-align: left;
+			}
+			
+			h6 {
+				font-family: Oswald;
+				font-size: 1.100rem;
+			}
+			
+			h7 {
+				font-family: Roboto;
+				font-size: 1.300rem;
+			}
+			
+			.headline {
+				padding: 3pt;
+				font-family: Roboto;
+				font-size: 1.300rem;
+			}
+			
+			.cust {
+				font-family: Roboto;
+				font-size: 1.300rem;
+			}
+
+			.others {
+				font-family: Roboto;
+				font-size: 1.200rem;
+			}			
+			
+			table.repayschedule {
+				padding-bottom: 2mm; 
+				padding-right: .20cm;
+				font-family: Roboto;
+				font-size: 1.200rem;
+				page-break-after: auto;
+			}
+			
+			td.repayschedule {
+				border-bottom: 0.5px solid black;
+				border-top: 0.5px solid black;
+				font-family: Oswald;
+				font-size: 1.200rem;
+				padding: .15cm;
+			}
+			
+			table.repay {
+				-pdf-keep-with-next: true;
+				border-collapse: collapse;
+				width: 100%; 
+			}
+			
+			th.repay {
+				  border-bottom: 0.5px solid black;
+				  border-top: 0.5px solid black;
+				  font-family: Oswald;
+				  font-size: 1.200rem;
+				  padding: .15cm;
+			}
+			
+			td.repay {
+				padding-top: 2mm; 
+				padding-right: .15cm;
+				font-family: Roboto;
+				font-size: 1.200rem;
+			}
+			
+	
+		</style>
+		<title>Loans - Repayment Schedule</title>
+		<meta name="description" content="Repay">
+	</head>
+
+	<body>
+		<div id="header_content" align="left">  
+			<img id="logo" src="{% static 'assets/img/client_logo.png' %}" width="60" height="40" />
+			<h1 id="company"> Bharath Capital Finance </h1>
+			<h6 id="date"> Date : {{ today }} </h6>
+			<table id="headtable">
+				<thead>
+					<th class="headline" align="left"> Loan No : {{ loanobj.loan_no }} </th>
+					<th class="headline" align="center"> REPAYMENT SCHEDULE </th>
+					<th class="headline" align="right"> Page No. : <pdf:pagenumber> of <pdf:pagecount> </th>
+				</thead>
+				<tbody>
+					<tr>
+						<td> </td>
+						<td align="center" style="font-size: 1.150rem;" > {{ loanobj.product.product_name }} </td>
+						<td> </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<!-- <div id="content_frame"> -->
+			<div id="customer">
+				<h7>	{{ loanobj.customer.full_name }}  	 												<br>  				</h7>
+				<h7>	{% if loanobj.customer.cont_house %} 		{{ loanobj.customer.cont_house }} 				{% endif %}	</h7>
+				<h7>	{% if loanobj.customer.cont_building %} 	{{ loanobj.customer.cont_building }} 	<br> 	{% endif %}	</h7>
+				<h7>	{% if loanobj.customer.cont_street_1 %} 	{{ loanobj.customer.cont_street_1 }} 	<br> 	{% endif %} </h7>
+				<h7>	{% if loanobj.customer.cont_street_2 %} 	{{ loanobj.customer.cont_street_2 }} 	<br> 	{% endif %}	</h7>
+				<h7>	{% if loanobj.customer.cont_village %} 		{{ loanobj.customer.cont_village }} 	, 		{% endif %} </h7>
+				<h7>	{% if loanobj.customer.cont_taluk %} 		{{ loanobj.customer.cont_taluk }} 		<br> 	{% endif %} </h7>
+				<h7>	{% if loanobj.customer.cont_district %} 	{{ loanobj.customer.cont_district }} 	<br> 	{% endif %} </h7>
+				<h7>	{% if loanobj.customer.cont_city %} 		{{ loanobj.customer.cont_city }} 		- 		{% endif %} </h7>
+				<h7>	{% if loanobj.customer.cont_postal_code %} 	{{ loanobj.customer.cont_postal_code }} <br> 	{% endif %} </h7>
+				<h7>	{% if loanobj.customer.cont_region %} 		{{ loanobj.customer.cont_region }} 		<br> 	{% endif %} </h7>
+				<h7>	{% if loanobj.customer.mobile_phone %} 		{{ loanobj.customer.mobile_phone }} 	<br> 	{% endif %} </h7>
+			</div>
+
+			<div id="loan">
+				<table>
+					<thead>
+						<th width="55%"> </th>
+						<th width="5%"> </th>
+						<th class="cust" width="45%" align="right">(Amount in Rs.)</th>
+					</thead>
+					<tbody>
+						<tr class="cust">
+							<td > Original Loan Amount </td>
+							<td> : </td>
+							<td align="right"> {{ loanobj.amount_finance }} </td>
+						</tr>
+						<tr class="cust">
+							<td > Original Amount Payable </td>
+							<td> : </td>
+							<td align="right"> {{ total }} </td>
+						</tr>
+						<tr class="cust">
+							<td > Total Tenure </td>
+							<td> : </td>
+							<td align="right"> {{ loanobj.total_instalments }} </td>
+						</tr>
+						<tr class="cust">
+							<td > Frequency of Tenure </td>
+							<td> : </td>
+							<td align="right"> {{ loanobj.get_instalment_type_display }} </td>
+						</tr>
+						<tr class="cust">
+							<td > Agreement Date </td>
+							<td> : </td>
+							<td align="right"> {{ loanobj.disbursal_date }} </td>
+						</tr>
+						<tr class="cust">
+							<td > First Instalment Due on </td>
+							<td> : </td>
+							<td align="right"> {{ loanobj.instalment_start }} </td>
+						</tr>
+						<tr class="cust">
+							<td > Last Instalment Due on </td>
+							<td> : </td>
+							<td align="right"> {{ loanobj.instalment_end }} </td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+<!-- Repayment Schedule Start-->
+			<div id="schedule">
+				<table class="repay">
+					<thead>
+						<th class="repay" align="left"> 	Number 				</th>
+						<th class="repay" align="left"> 	Due Date 			</th>
+						<th class="repay" align="right"> 	Instalment Amount 	</th>
+						<th class="repay" align="right"> 	Principal 			</th>
+						<th class="repay" align="right"> 	Interest 			</th>
+						<th class="repay" align="right"> 	Balance 			</th>
+					</thead>
+				</table>
+			</div>
+<!-- Repayment Schedule End-->
+		<!-- </div> -->
+		<div id="content_frame">
+			<table class="repayschedule">
+				<tbody>
+					{% for repay in repayment %}
+						<tr>
+							<td align="left" style="padding-left: .25cm;"> {{ repay.number }}	</td>	
+							<td align="left">   {{ repay.due_date }} 					</td>
+							<td align="right">  {{ repay.instalment|floatformat:2 }} 	</td>
+							<td align="right">  {{ repay.principal|floatformat:2 }}  	</td>
+							<td align="right">  {{ repay.interest|floatformat:2 }} 	</td>
+							<td align="right">  {{ repay.balance|floatformat:2 }} 	</td>
+						</tr>	
+						{% if forloop.counter|divisibleby:"18" %}
+								</tbody>
+							</table>
+							<div> <pdf:nextpage /> </div>
+							<table class="repayschedule">
+								<tbody>
+								{% if not forloop.counter|divisibleby:"18" %}
+									<tr>
+										<td align="left" style="padding-left: .25cm;"> {{ repay.number }}	</td>	
+										<td align="left">   {{ repay.due_date }} 					</td>
+										<td align="right">  {{ repay.instalment|floatformat:2 }} 	</td>
+										<td align="right">  {{ repay.principal|floatformat:2 }}  	</td>
+										<td align="right">  {{ repay.interest|floatformat:2 }} 	</td>
+										<td align="right">  {{ repay.balance|floatformat:2 }} 	</td>
+									</tr>
+								{% endif %}
+						{% endif %}
+					{% endfor %}
+				</tbody>
+				<tfoot class="repayschedule">
+					<tr>
+						<td class="repayschedule"> </td>
+						<td class="repayschedule" align="left">Total</td>
+						<td class="repayschedule" align="right"> {{ total }} </td>
+						<td class="repayschedule" align="right"> {{ loanobj.amount_finance }} </td>
+						<td class="repayschedule" align="right"> {{ interest }} </td>
+						<td class="repayschedule" align="right"> 0.00 </td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+		<div id="footer_content" align="center"> <hr>
+			<b> Bharath Capital Finance </b>
+			<br>Please quote your LOAN Account Number whenever you contact us.
+			<br> Regd Off : C36/4, Hotel Bismi Complex, Pallivasal Street, Opp. PF Office
+			<br> N.G.O.'B' Colony, Tirunelveli - 627007
+			<br> PH: +91919488210098
+		</div>
+  </body>
+</html>

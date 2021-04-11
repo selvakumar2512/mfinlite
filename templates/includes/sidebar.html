@@ -1,0 +1,140 @@
+    {% load static %}
+	
+	<div class="sidebar" data-color="purple" data-background-color="white" >
+	
+		<div class="logo">
+			{% if user.is_authenticated %}
+				<img src="{% static 'assets/img/client_logo_hor.png' %}" alt="Company Logo" href="https:www.acmesoln.com">
+			{% else %}
+				<img src="{% static 'assets/img/client_logo_hor.png' %}" alt="mFinLite Logo" href="https:www.acmesoln.com">
+			{% endif %}
+		</div>
+
+
+      <div class="sidebar-wrapper">
+        <ul class="nav">
+          {% if user.is_authenticated %}
+          <li class="nav-item {% if 'index' == segment %} active {% endif %}">
+            <a class="nav-link" href="/">
+              <i class="material-icons">dashboard</i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+		  <li>
+			<a class="nav-link" >
+				<i class="material-icons">people_alt</i>
+				<p>Customers</p>
+			</a>
+			<ul style="list-style-type:none">
+				<li class="nav-item {% if segment == 'customer' %} active {% endif %}">
+					<a class="nav-link" href={% url 'customers:customers_main' %}>
+						<i class="material-icons">person_add</i>
+						<p>New Customer</p>
+					</a>
+				</li>
+				<li class="nav-item {% if segment == 'customer-manage' %} active {% endif %}">
+					<a class="nav-link" href={% url 'customers:customers_manage' %}>
+						<i class="material-icons">person_outline</i>
+						<p>Manage Customer</p>
+					</a>
+			    </li>	
+				<li class="nav-item {% if segment == 'customer-search' %} active {% endif %}">
+					<a class="nav-link" href={% url 'customers:customers_search' %}>
+						<i class="material-icons">person_search</i>
+						<p>Search Customer</p>
+					</a>
+			    </li>				
+			</ul>
+		  </li>
+		  <li>
+			<a class="nav-link" >
+				<i class="material-icons">account_balance</i>
+				<p>Loans</p>
+			</a>
+			<ul style="list-style-type:none">
+				<li class="nav-item {% if segment == 'loan-new' %} active {% endif %}">
+					<a class="nav-link" href={% url 'loans:loans_new' %}>
+					  <i class="material-icons">business_center</i>
+					  <p>New Loan</p>
+					</a>
+				</li>
+				<li class="nav-item {% if segment == 'loan-manage' %} active {% endif %}">
+					<a class="nav-link" href={% url 'loans:loans_manage' %}>
+						<i class="material-icons">edit</i>
+						<p>Manage Loan</p>
+					</a>
+			    </li>	
+				<li class="nav-item {% if segment == 'loan-search' %} active {% endif %}">
+					<a class="nav-link" href={% url 'loans:loans_search' %}>
+						<i class="material-icons">search</i>
+						<p>Search Loan</p>
+					</a>
+			    </li>	
+			</ul>
+		  </li>
+          <li class="nav-item {% if 'collection' in segment %} active {% endif %}">
+            <a class="nav-link" href={% url 'loans:loans_collection' %}>
+              <i class="material-icons">payments</i>
+              <p>Collection</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'foreclosure' in segment %} active {% endif %}">
+            <a class="nav-link" href={% url 'loans:loans_foreclosure' %}>
+              <i class="material-icons">local_atm</i>
+              <p>Foreclosure</p>
+            </a>
+          </li>
+		  <li class="nav-item {% if 'documents' in segment %} active {% endif %}">
+            <a class="nav-link" href={% url 'loans:loans_documents' %}>
+              <i class="material-icons">receipt</i>
+              <p>Loan Documents</p>
+            </a>
+          </li>
+          <li class="nav-item {% if 'reports' in segment %} active {% endif %}">
+            <a class="nav-link">
+              <i class="material-icons">analytics</i>
+              <p>Reports</p>
+            </a>
+			<ul style="list-style-type:none">
+				<li class="nav-item {% if segment == 'rptcol' %} active {% endif %}">
+					<a class="nav-link" href={% url 'loans:collections' %}>
+						<i class="material-icons">monetization_on</i>
+						<p>Collection Report</p>
+					</a>
+				</li>
+				<li class="nav-item {% if segment == 'rptover' %} active {% endif %}">
+					<a class="nav-link" href={% url 'loans:overdue' %}>
+						<i class="material-icons">more_time</i>
+						<p>Overdue Report</p>
+					</a>
+			    </li>	
+				<li class="nav-item {% if segment == 'rptfore' %} active {% endif %}">
+					<a class="nav-link" href={% url 'loans:forecast' %}>
+						<i class="material-icons">insights</i>
+						<p>Forecast Report</p>
+					</a>
+			    </li>				
+			</ul>
+          </li>
+		  <!--
+          <li class="nav-item {% if 'ui-notifications' in segment %} active {% endif %}">
+            <a class="nav-link" href="/ui-notifications.html">
+              <i class="material-icons">supervisor_account</i>
+              <p>User Management</p>
+            </a>
+          </li>
+		  -->
+
+          <li class="nav-item ">
+            <a class="nav-link" href="{% url 'logout' %}" >
+              <i class="material-icons">directions_run</i>
+              <p>Logout</p>
+            </a>
+          </li>
+          {% else %}
+          {% endif %}
+        </ul>
+      </div>
+      
+
+    </div>

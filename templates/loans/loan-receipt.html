@@ -1,0 +1,619 @@
+<!doctype html>
+<html>
+<!--
+	<head>
+		{% load static %}
+		<meta charset="utf-8">
+		<style>
+	
+			@page {
+				size: a4 portrait;
+				margin:1cm;
+
+				@frame header_frame {   /* Static Frame */       
+					-pdf-frame-content: header_content;
+					left: 30pt; 
+					width: 532pt; 
+					top: 30pt; 
+					height: 70pt;
+				}
+				
+				@frame footer_frame {    /* Static Frame */       
+					-pdf-frame-content: footer_content;
+					left: 50pt; 
+					width: 512pt; 
+					top: 772pt; 
+					height: 70pt;
+				}
+				
+				@frame logo {             /* Static Frame */
+					-pdf-frame-content: logo;
+					left: 50pt;
+					top: 50pt;
+				}
+				
+				@font-face {
+					font-family: Oswald;
+					src: url( '/static/fonts/Oswald-Regular.ttf' );
+				}
+				
+				@font-face {
+					font-family: Roboto;
+					src: url( '/static/fonts/Roboto-Regular.ttf' );
+				}
+				
+				@frame company {
+					-pdf-frame-content: company;
+					left: 100pt;
+					top: 54pt;
+					margin-left: 1rem;			
+				}
+				
+				@frame customer {
+					-pdf-frame-content: customer;
+					left: 30pt; 
+					width: 532pt; 
+					top: 150pt;
+				}
+				
+				@frame auto_message {
+					-pdf-frame-content: auto_message;
+					left: 30pt; 
+					width: 532pt; 
+					top: 700pt;
+				}
+				
+				@frame cont {
+					-pdf-frame-content: cont;
+					font-size: 1.125rem;
+				}
+				
+				@frame content_frame {  /* Static Frame */        
+					left: 50pt; 
+					width: 532pt; 
+					top: 300pt; 
+					height: 472pt;
+				}
+			}
+			
+			h1 {
+				color: #D00693;
+				font-family: Oswald;
+				font-size: 2.000rem;
+			}
+
+			h2 {
+				color: #002060;
+				font-family: Roboto;
+				font-size: 1.750rem;
+				padding: 0.625rem 0;
+				margin-left: 1rem;
+				text-align: center;
+			}
+			
+			h3 {
+				font-family: Oswald;
+				font-size: 1.200rem;
+			}
+			
+			h4 {
+				font-size: 1.120rem;
+				text-align: right;
+				padding-left: 50px;
+			}
+			
+			customer {
+				font-family: Roboto;
+			    font-size: 1.200rem;
+				padding-left: 30px;
+			}
+			
+			dl {
+				float: right;
+				text-align: right;
+				padding-left: 50px;
+			}
+			
+			dl dt {
+				font-family: Oswald;
+				font-size: 1.250rem;
+				align: left;
+			}
+			
+			dl dd {
+				font-size: 1.150rem;
+				font-family: Roboto;
+				float: left;
+			}
+			
+			dl dt, dl dd {
+				display: inline;
+				margin: 0; 
+			}
+			
+			dl dt::before {
+				content: '';
+				display: block; 
+			}
+			
+			dl dt::after {
+				content: ':'; 
+			}
+			
+			aside {
+				display: inline;
+
+			}
+			
+			aside heading {
+				font-style: bold;
+				font-family: Oswald;
+				white-space: pre-line;
+			    font-size: 1.250rem;
+				padding-left: 20px;
+			}
+			aside address {
+				white-space: pre-line;
+			    font-size: 1.100rem;
+			}
+			aside address#from {
+				flex: 1; 
+			}
+			aside address#to {
+				text-align: right; 
+			}
+		
+			table {
+				-pdf-keep-with-next: true;
+				border-collapse: collapse;
+				width: 100%; 
+			}
+			
+			table th {
+				  border-bottom: 0.5px solid black;
+				  font-family: Oswald;
+				  font-size: 1.150rem;
+				  padding-bottom: .15cm;
+				  text-transform: uppercase; 
+			}
+			
+			table td {
+				padding-top: 2mm; 
+				font-size: 1.150rem;
+			}
+			
+			table th, table td {
+				text-align: center; 
+			}		
+		
+		</style>
+		<title>Loans - Invoice</title>
+		<meta name="description" content="Invoice">
+	</head>
+
+	<body>
+		<div id="header_content" align="left">  
+			<img id="logo" src="{% static 'assets/img/client_logo.png' %}" width="60" height="40" />
+			<h1 id="company"> Bharath Capital Finance </h1>
+		</div>
+		<h2> Receipt </h2>
+		<dl id="informations">
+			<dt>Receipt Number :</dt>
+			<dd>{{ invoice }}</dd> <br>
+			<dt align="left">Receipt Date &nbsp; &nbsp; : &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </dt>
+			<dd align="left">{{ master.payment_date }}</dd>
+		</dl>
+		-->
+		<!--
+		<aside>
+			<heading> Received From: </heading>
+			<address id="from">
+				{{ master.loan.customer.full_name }}  	 													<br> 
+				{% if master.loan.customer.cont_house %} 		{{ master.loan.customer.cont_house }} 				{% endif %}
+				{% if master.loan.customer.cont_building %} 	{{ master.loan.customer.cont_building }} 	<br> 	{% endif %}	
+				{% if master.loan.customer.cont_street_1 %} 	{{ master.loan.customer.cont_street_1 }} 	<br> 	{% endif %}
+				{% if master.loan.customer.cont_street_2 %} 	{{ master.loan.customer.cont_street_2 }} 	<br> 	{% endif %}
+				{% if master.loan.customer.cont_village %} 		{{ master.loan.customer.cont_village }} 	<br> 	{% endif %}
+				{% if master.loan.customer.cont_taluk %} 		{{ master.loan.customer.cont_taluk }} 		<br> 	{% endif %}
+				{% if master.loan.customer.cont_district %} 	{{ master.loan.customer.cont_district }} 	<br> 	{% endif %}
+				{% if master.loan.customer.cont_city %} 		{{ master.loan.customer.cont_city }} 		- 		{% endif %}
+				{% if master.loan.customer.cont_postal_code %} 	{{ master.loan.customer.cont_postal_code }} <br> 	{% endif %}
+				{% if master.loan.customer.cont_region %} 		{{ master.loan.customer.cont_region }} 		<br> 	{% endif %}
+				{% if master.loan.customer.mobile_phone %} 		{{ master.loan.customer.mobile_phone }} 	<br> 	{% endif %}
+			</address>
+		</aside>
+		<br> <br>
+		-->
+		<!--
+		<div id="customer">
+			<h3> To, </h3>
+			<customer>
+				{{ master.loan.customer.full_name }}  	 													<br> 
+				{% if master.loan.customer.cont_house %} 		{{ master.loan.customer.cont_house }} 				{% endif %}
+				{% if master.loan.customer.cont_building %} 	{{ master.loan.customer.cont_building }} 	<br> 	{% endif %}	
+				{% if master.loan.customer.cont_street_1 %} 	{{ master.loan.customer.cont_street_1 }} 	<br> 	{% endif %}
+				{% if master.loan.customer.cont_street_2 %} 	{{ master.loan.customer.cont_street_2 }} 	<br> 	{% endif %}
+				{% if master.loan.customer.cont_village %} 		{{ master.loan.customer.cont_village }} 	<br> 	{% endif %}
+				{% if master.loan.customer.cont_taluk %} 		{{ master.loan.customer.cont_taluk }} 		<br> 	{% endif %}
+				{% if master.loan.customer.cont_district %} 	{{ master.loan.customer.cont_district }} 	<br> 	{% endif %}
+				{% if master.loan.customer.cont_city %} 		{{ master.loan.customer.cont_city }} 		- 		{% endif %}
+				{% if master.loan.customer.cont_postal_code %} 	{{ master.loan.customer.cont_postal_code }} <br> 	{% endif %}
+				{% if master.loan.customer.cont_region %} 		{{ master.loan.customer.cont_region }} 		<br> 	{% endif %}
+				{% if master.loan.customer.mobile_phone %} 		{{ master.loan.customer.mobile_phone }} 	<br> 	{% endif %}
+			</customer>
+		</div>
+    <table>
+		<thead>
+			<th>Loan Number</th>
+			<th>Reference</th>
+			<th>Payment Mode</th>
+			<th>Cheque No.</th>
+			<th>Payment Bank</th>
+			<th>Amount</th>
+		</thead>
+		<tbody>
+			{% for transaction in transactions %}
+				<tr>
+					<td>{{ transaction.loan.loan_no }}</td>
+					<td>{{ transaction.invoice_reference }}</td>
+					<td>{{ transaction.get_payment_mode_display }}</td>
+					<td>{{ transaction.payment_no }}</td>
+					<td>{{ transaction.cheque_bank }}</td>
+					<td>{{ transaction.total_amount }}</td>
+				</tr>
+			{% endfor %}
+			<tr>
+				<td style="border-top: 0.4px solid black;"></td>
+				<td style="border-top: 0.4px solid black;">Total</td>
+				<td style="border-top: 0.4px solid black;"></td>
+				<td style="border-top: 0.4px solid black;"></td>
+				<td style="border-top: 0.4px solid black;"></td>
+				<td style="border-top: 0.4px solid black;">{{ total }}</td>
+			</tr>
+		</tbody>
+    </table>
+	
+		<div id="auto_message">
+			<h3 align="center">This is a computer-generated document hence does not require any signature</h3>
+		</div>
+		
+	<div id="footer_content" align="center"> <hr>
+		<b> Bharath Capital Finance </b>
+		<br>Please quote your LOAN Account Number whenever you contact us.
+		<br> Regd Off : C36/4, Hotel Bismi Complex, Pallivasal Street, Opp. PF Office
+		<br> N.G.O.'B' Colony, Tirunelveli - 627007
+		<br> PH: +91919488210098
+    </div>
+  </body>
+  -->
+  <head>
+		{% load static %}
+		<meta charset="utf-8">
+		<style>
+	
+			@page {
+				size: a4 portrait;
+				margin:1cm;
+				
+				@font-face {
+					font-family: Oswald;
+					src: url( '/static/fonts/Oswald-Regular.ttf' );
+				}
+				
+				@font-face {
+					font-family: Roboto;
+					src: url( '/static/fonts/Roboto-Regular.ttf' );
+				}
+				
+				@frame header_frame {   /* Static Frame */       
+					-pdf-frame-content: header_content;
+					left: 30pt; 
+					width: 532pt; 
+					top: 30pt; 
+					height: 70pt;
+				}
+
+				@frame footer_frame {    /* Static Frame */       
+					-pdf-frame-content: footer_content;
+					left: 30pt; 
+					width: 532pt; 
+					top: 772pt; 
+					height: 70pt;
+				}
+				
+				@frame logo {             /* Static Frame */
+					-pdf-frame-content: logo;
+					left: 30pt;
+					top: 30pt;
+				}
+				
+				@frame company {
+					-pdf-frame-content: company;
+					left: 80pt;
+					top: 34pt;
+					margin-left: 1rem;			
+				}
+				
+				@frame date {
+					-pdf-frame-content: date;
+					top: 40pt;
+					left: 500pt;
+				}	
+				
+				@frame headtable {
+					-pdf-frame-content: headtable;
+					left: 30pt;
+					top: 70pt;
+					width: 532pt;
+					height: 40pt;
+				}
+				
+				@frame customer {
+					-pdf-frame-content: customer;
+					left: 30pt;
+					top: 110pt;
+					width: 232pt;
+					height: 135pt;
+					padding: 5pt;
+					
+				}
+				
+				@frame loan {
+					-pdf-frame-content: loan;
+					left: 262pt;
+					top: 110pt;
+					width: 300pt;
+					height: 135pt;
+					padding: 5pt;
+					
+				}
+				
+				@frame schedule {
+					-pdf-frame-content: schedule;
+					left: 30pt;
+					top: 250pt;
+					width: 532pt;
+					height: 45pt;
+					padding: 5pt;
+				}
+
+				@frame auto_message {
+					-pdf-frame-content: auto_message;
+					left: 30pt; 
+					width: 532pt; 
+					top: 700pt;
+				}
+				
+				@frame content_frame {          
+					left: 30pt; 
+					width: 532pt; 
+					top: 300pt; 
+				}
+				
+			}
+			
+			h1 {
+				color: #D00693;
+				font-family: Oswald;
+				font-size: 2.000rem;
+			}
+
+			h2 {
+				color: #002060;
+				font-family: Roboto;
+				font-size: 1.750rem;
+				padding: 0.625rem 0;
+				margin-left: 1rem;
+				text-align: center;
+			}
+			
+			h3 {
+				font-family: Oswald;
+				font-size: 1.120rem;
+				margin-left: 1rem;
+				text-align: center;
+			}
+			
+			h4 {
+				font-size: 1.120rem;
+				text-align: right;
+				padding-left: 50px;
+			}
+			
+			h5 {
+				font-family: Oswald;
+				font-size: 1.120rem;
+				text-align: left;
+			}
+			
+			h6 {
+				font-family: Oswald;
+				font-size: 1.100rem;
+			}
+			
+			h7 {
+				font-family: Roboto;
+				font-size: 1.250rem;
+			}
+			
+			h8 {
+				font-family: Oswald;
+				font-size: 1.300rem;
+				margin-left: 1rem;
+			}
+			
+			.headline {
+				padding: 3pt;
+				font-family: Roboto;
+				font-size: 1.500rem;
+				color: #002060;
+			}
+			
+			.cust {
+				font-family: Roboto;
+				font-size: 1.300rem;
+			}
+
+			.others {
+				font-family: Roboto;
+				font-size: 1.200rem;
+			}			
+			
+			table.repayschedule {
+				pdf-keep-with-next: true;
+				border-collapse: collapse;
+				width: 100%;
+			}
+			
+			td.repayschedule {
+				font-family: Roboto;
+				font-size: 1.200rem;
+				padding-left: 10pt;
+			}
+			
+			tr.repayschedule {
+				border-bottom: 0.5px solid black;
+				font-family: Roboto;
+				font-size: 1.200rem;
+				padding-left: 10pt;
+			}
+			
+			table.repay {
+				-pdf-keep-with-next: true;
+				border-collapse: collapse;
+				width: 100%; 
+			}
+			
+			th.repay {
+				  border-bottom: 0.5px solid black;
+				  border-top: 0.5px solid black;
+				  font-family: Oswald;
+				  font-size: 1.200rem;
+				  padding: .15cm;
+			}
+			
+			td.repay {
+				padding-top: 2mm; 
+				padding-right: .15cm;
+				font-family: Roboto;
+				font-size: 1.200rem;
+			}
+			
+	
+		</style>
+		<title>Loans - Receipt</title>
+		<meta name="description" content="Receipt">
+	</head>
+
+	<body>
+		<div id="header_content" align="left">  
+			<img id="logo" src="{% static 'assets/img/client_logo.png' %}" width="60" height="40" />
+			<h1 id="company"> Bharath Capital Finance </h1>
+			<table id="headtable">
+				<thead>
+					<th class="headline" align="left">  </th>
+					<th class="headline" align="center"> RECEIPT </th>
+					<th class="headline" align="right">  </th>
+				</thead>
+				<tbody>
+					<tr>
+						<td> </td>
+						<td align="center" style="font-size: 1.150rem;" >  </td>
+						<td> </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="customer">
+			<h8> Received From, </h8> <br> <br>
+			<h7> {{ master.loan.customer.full_name }}  	 													<br> </h7>
+			<h7> {% if master.loan.customer.cont_house %} 		{{ master.loan.customer.cont_house }} 				{% endif %} </h7>
+			<h7> {% if master.loan.customer.cont_building %} 	{{ master.loan.customer.cont_building }} 	<br> 	{% endif %}	 </h7>
+			<h7> {% if master.loan.customer.cont_street_1 %} 	{{ master.loan.customer.cont_street_1 }} 	<br> 	{% endif %} </h7>
+			<h7> {% if master.loan.customer.cont_street_2 %} 	{{ master.loan.customer.cont_street_2 }} 	<br> 	{% endif %} </h7>
+			<h7> {% if master.loan.customer.cont_village %} 	{{ master.loan.customer.cont_village }} 	<br> 	{% endif %} </h7>
+			<h7> {% if master.loan.customer.cont_taluk %} 		{{ master.loan.customer.cont_taluk }} 		<br> 	{% endif %} </h7>
+			<h7> {% if master.loan.customer.cont_district %} 	{{ master.loan.customer.cont_district }} 	<br> 	{% endif %} </h7>
+			<h7> {% if master.loan.customer.cont_city %} 		{{ master.loan.customer.cont_city }} 		- 		{% endif %} </h7>
+			<h7> {% if master.loan.customer.cont_postal_code %} {{ master.loan.customer.cont_postal_code }} <br> 	{% endif %} </h7>
+			<h7> {% if master.loan.customer.cont_region %} 		{{ master.loan.customer.cont_region }} 		<br> 	{% endif %} </h7>
+			<h7> {% if master.loan.customer.mobile_phone %} 	{{ master.loan.customer.mobile_phone }} 	<br> 	{% endif %} </h7>
+		</div>
+		<div id="loan">
+			<table>
+				<thead>
+					<th width="35%"> </th>
+					<th width="30%"> </th>
+					<th width="5%"> </th>
+					<th width="35%"></th>
+				</thead>
+				<tbody>
+					<tr class="cust">
+						<td> </td>
+						<td> Receipt Number</td>
+						<td> : </td>
+						<td> {{ invoice }} </td>
+					</tr>
+					<tr class="cust">
+						<td> </td>
+						<td> Receipt Date</td>
+						<td> : </td>
+						<td> {{ master.payment_date }} </td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+<!-- Receipt Start-->
+			<div id="schedule">
+				<table class="repay">
+					<thead>
+						<th class="repay"> 	Loan Number		</th>
+						<th class="repay"> 	Reference		</th>
+						<th class="repay"> 	Payment Mode 	</th>
+						<th class="repay"> 	Cheque No. 		</th>
+						<th class="repay"> 	Payment Bank 	</th>
+						<th class="repay"> 	Amount 			</th>
+					</thead>
+				</table>
+			</div>
+<!-- Receipt End-->
+		<div id="content_frame">
+			<table class="repayschedule">
+				<tbody>
+					{% for transaction in transactions %}
+						<tr>
+							<td class="repayschedule">	{{ transaction.loan.loan_no }}				</td>
+							<td class="repayschedule">	{{ transaction.invoice_reference }}			</td>
+							<td class="repayschedule">	{{ transaction.get_payment_mode_display }}	</td>
+							<td class="repayschedule">	{{ transaction.payment_no }}				</td>
+							<td class="repayschedule">	{{ transaction.cheque_bank }}				</td>
+							<td class="repayschedule">	{{ transaction.total_amount }}				</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+				<tfoot>
+					<tr class="repayschedule">
+					<td class="repayschedule">	{{ transaction.loan.loan_no }}				</td>
+							<td class="repayschedule">	{{ transaction.invoice_reference }}			</td>
+							<td class="repayschedule">	{{ transaction.get_payment_mode_display }}	</td>
+							<td class="repayschedule">	{{ transaction.payment_no }}				</td>
+							<td class="repayschedule">	{{ transaction.cheque_bank }}				</td>
+							<td class="repayschedule">	{{ transaction.total_amount }}				</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+		
+		<div id="auto_message">
+			<h3 align="center">This is a computer-generated document hence does not require any signature</h3>
+		</div>
+		
+		<div id="footer_content" align="center"> <hr>
+			<b> Bharath Capital Finance </b>
+			<br>Please quote your LOAN Account Number whenever you contact us.
+			<br> Regd Off : C36/4, Hotel Bismi Complex, Pallivasal Street, Opp. PF Office
+			<br> N.G.O.'B' Colony, Tirunelveli - 627007
+			<br> PH: +919488210098
+		</div>
+  </body>
+</html>

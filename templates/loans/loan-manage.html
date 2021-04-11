@@ -1,0 +1,855 @@
+{% extends "layouts/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block title %} Loans {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+	<div class="card">
+		<div class="card-header card-header-tabs card-header-primary">
+			<div class="nav-tabs-navigation">
+				<div class="nav-tabs-wrapper">
+					<ul class="nav nav-tabs" data-tabs="tabs">
+						<li class="nav-item">
+							<a class="nav-link {% if tab == 'tab_master' %} active {% endif %}" href="#tab_master" data-toggle="tab">
+								<i class="material-icons">business_center</i> Loan Master
+								<div class="ripple-container"></div>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% if tab == 'tab_asset' %} active {% endif %}" href="#tab_asset" data-toggle="tab">
+								<i class="material-icons">emoji_transportation</i> Loan Asset
+								<div class="ripple-container"></div>
+							</a>
+						</li>
+						<li class="nav-item"> 
+							<a class="nav-link {% if tab == 'tab_transactions' %} active {% endif %}" href="#tab_transactions" data-toggle="tab">
+								<i class="material-icons">insights</i> Loan Transactions
+								<div class="ripple-container"></div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>	
+		<div class="card-body">
+			{% if msg %}
+				<div class="alert alert-success">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						 <i class="material-icons">close</i>
+					</button>
+					<span> {{ msg }} </span>
+				</div>
+			{% endif %}	
+			<div class="tab-content">
+				<div class="tab-pane {% if tab == 'tab_master' %} active {% endif %}" id="tab_master">
+					<form role="form" name="Get_Form" method="GET" action="">
+						<fieldset class="form-fieldset">
+							<legend class="form-legend">Loan Master</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Loan Number</label>
+										<input type="text" class="form-control" name="loan_no">
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-2">
+									<button type="submit" name="get_loan" class="btn btn-primary pull-left">Get Loan</button>								
+								</div>
+							</div>
+						</fieldset>
+					</form>
+					<form role="form" method="post" action="">
+						{% csrf_token %}
+						<fieldset class="form-fieldset">
+							<legend class="form-legend">Loan Master</legend>
+							<div class="row">
+								<div class="col-md-5" style="display: flex; justify-content: flex-end">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Client</label>
+									  {{ loanform.client_id }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5" style="display: flex; justify-content: flex-end">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Profit Centre</label>
+									  {{ loanform.profitcentre }}
+									</div>
+								</div>
+							</div>	
+							<div class="row">						
+								<div class="col-md-5" style="display: flex; justify-content: flex-end">
+									<div class="form-group">
+										<label class="bmd-label-floating">Cost Centre/Department</label>
+										{{ loanform.costcentre }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5" style="display: flex; justify-content: flex-end">
+									<div class="form-group">
+										<label class="bmd-label-floating">Branch</label>
+										{{ loanform.branch }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5" style="display: flex; justify-content: flex-end">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Product</label>
+									  {{ loanform.product }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5" style="display: flex; justify-content: flex-end">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Currency</label>
+									  {{ loanform.currency }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Loan Number</label>
+										{{ loanform.loan_no }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">External Loan Number</label>
+									  {{ loanform.ext_loan_no }}
+									</div>
+								</div>
+							</div>					
+						</fieldset>
+						<fieldset class="form-fieldset">
+							<legend class="form-legend">Applicant Details</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Customer ID</label>
+										{{ loanform.customer }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Customer Name</label>
+									  {{ loanform.customer_name }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Application No.</label>
+										{{ loanform.application_no }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Application Date</label>
+									  {{ loanform.application_date }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Bank Name</label>
+										{{ loanform.bank_name }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Bank Branch</label>
+									  {{ loanform.bank_branch }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Bank IFSC Code</label>
+										{{ loanform.bank_ifsc }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Bank Account Number</label>
+									  {{ loanform.bank_account }}
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="form-fieldset">
+							<legend class="form-legend">Payment & Charges</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Amount Financed</label>
+										{{ loanform.amount_finance }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Service Charges</label>
+									  {{ loanform.service_charges }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">GST Charges</label>
+										{{ loanform.gst_charges }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">VAT Charges</label>
+									  {{ loanform.vat_charges }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">CESS Charges</label>
+										{{ loanform.cess_charges }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Other Charges</label>
+									  {{ loanform.other_charges }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Amount Disbursed</label>
+										{{ loanform.amount_disburse }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Principal Outstanding</label>
+									  {{ loanform.principal_os }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">LPP Outstanding</label>
+										{{ loanform.latepayment_os }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">CBC Outstanding</label>
+									  {{ loanform.cbc_os }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">First Instalment Amount</label>
+										{{ loanform.amount_first_instal }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Interest Rate</label>
+									  {{ loanform.interest_rate }}
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="form-fieldset">
+							<legend class="form-legend">Instalment Details</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Disbursal Date</label>
+										{{ loanform.disbursal_date }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Interest Start Date</label>
+									  {{ loanform.interest_start }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Due Date</label>
+										{{ loanform.due_date }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Instalment Type</label>
+									  {{ loanform.instalment_type }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Instalment Start Date</label>
+										{{ loanform.instalment_start }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Instalment End Date</label>
+									  {{ loanform.instalment_end }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Payment Mode</label>
+										{{ loanform.payment_mode }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">First Payment Mode</label>
+									  {{ loanform.first_payment }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Total Instalments</label>
+										{{ loanform.total_instalments }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Advance Instalments Paid</label>
+									  {{ loanform.advance_instalments }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Paid Instalments</label>
+										{{ loanform.paid_instalments }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Overdue Instalments</label>
+									  {{ loanform.overdue_instalments }}
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="form-fieldset">
+							<legend class="form-legend">Status</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Disbursal Status</label>
+										{{ loanform.disbursal_status }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Loan Status</label>
+									  {{ loanform.loan_status }}
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<div class="row">
+							<div class="col-md-5"></div>
+							<div class="col-md-5">
+								<button type="submit" name="update_loan" class="btn btn-primary pull-left">Update</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="tab-pane {% if tab == 'tab_asset' %} active {% endif %}" id="tab_asset">
+					<form role="form" name="Get_Form" method="GET" action="">
+						<fieldset class="form-fieldset">
+							<legend class="form-legend">Loan Asset</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Loan Number</label>
+										<input type="text" class="form-control" name="loan_no">
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-2">
+									<button type="submit" name="get_asset" class="btn btn-primary pull-left">Get Asset</button>								
+								</div>
+							</div>
+						</fieldset>
+					</form>
+					<form role="form" method="post" action="">
+						{% csrf_token %}
+						<fieldset class="form-fieldset">
+							<legend class="form-legend">Asset Details</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Loan Number</label>
+										{{ assetform.loan }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Asset Number</label>
+										{{ assetform.asset_no }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Asset Description</label>
+									  {{ assetform.asset_desc }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Invoice Number</label>
+										{{ assetform.invoice_no }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Invoice Date</label>
+									  {{ assetform.invoice_date }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Make</label>
+										{{ assetform.make }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Model</label>
+									  {{ assetform.model }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Chasis Number</label>
+										{{ assetform.chasis_no }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Engine Number</label>
+									  {{ assetform.engine_no }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Color</label>
+										{{ assetform.color }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Quantity</label>
+									  {{ assetform.quantity }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Year</label>
+										{{ assetform.year }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Registration Number</label>
+									  {{ assetform.registration_no }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">RTO</label>
+										{{ assetform.rto }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Supplier</label>
+									  {{ assetform.supplier }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Category</label>
+										{{ assetform.category }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Invoice Remark</label>
+									  {{ assetform.invoice_remark }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Sales Date</label>
+										{{ assetform.sales_date }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Reposession Date</label>
+									  {{ assetform.reposession_date }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">IMEI 1</label>
+										{{ assetform.imei1 }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">IMEI 2</label>
+									  {{ assetform.imei2 }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Asset Cost</label>
+										{{ assetform.asset_cost }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Blue Book Value</label>
+									  {{ assetform.blue_book_value }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Value</label>
+										{{ assetform.value }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Sales Value</label>
+									  {{ assetform.sales_value }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Delivery Order</label>
+										{{ assetform.delivery_order }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">Delivery Order Date</label>
+									  {{ assetform.do_date }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Regd. Remark</label>
+										{{ assetform.regd_remark }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">First Inspect Date</label>
+									  {{ assetform.first_inspect_date }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">RC Status</label>
+										{{ assetform.rc_status }}
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+									  <label class="bmd-label-floating">RC Status Update Date</label>
+									  {{ assetform.rcsu_date }}
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">RBI Code</label>
+										{{ assetform.rbi_code }}
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<div class="row">
+							<div class="col-md-5"></div>
+							<div class="col-md-5">
+								<button type="submit" name="update_asset" class="btn btn-primary pull-left">Update Asset</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="tab-pane {% if tab == 'tab_transactions' %} active {% endif %}" id="tab_transactions">
+					<form role="form" name="Get_Form" method="GET" action="">
+						<fieldset class="form-fieldset">
+							<legend class="form-legend">Loan Transactions</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Loan Number</label>
+										<input type="text" class="form-control" name="loan_no">
+									</div>
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-2">
+									<button type="submit" name="get_trans" class="btn btn-primary pull-left">Get Transactions</button>								
+								</div>
+								<div class="col-md-1"></div>
+								<div class="col-md-2">
+									<button type="submit" name="new_trans" class="btn btn-primary pull-left">New Transaction</button>								
+								</div>
+								<div class="col-md-1"></div>
+							</div>
+						</fieldset>
+					</form>
+					{% if action == 'get_trans' %}
+						<div class="table-responsive">
+							<table class="table" id="translist">
+									<thead class=" text-primary">
+										<th> Loan No </th>
+										<th> Due Date </th>
+										<th> Total Amount </th>
+										<th> Dr/Cr </th>
+										<th> Trans. Type </th>
+										<th> Trans. Status </th>
+										<th> Pay Mode </th>
+										<th> Pay Date </th>
+									</thead>						
+									<tbody>
+										{% for transaction in loantransactions %}
+											<tr>
+												<td> {{ transaction.loan.loan_no }} </td>
+												<td> {{ transaction.due_date }} </td>
+												<td> {{ transaction.total_amount }} </td>
+												<td> {{ transaction.get_debit_credit_display }} </td>
+												<td> {{ transaction.get_transaction_type_display }} </td>
+												<td> {{ transaction.get_transaction_status_display }} </td>
+												<td> {{ transaction.get_payment_mode_display }} </td>
+												<td> {{ transaction.payment_date }} </td>										
+											</tr>
+										{% endfor %}
+									</tbody>
+							</table>
+						</div>
+					{% endif %}
+					{% if action == 'new_trans' or action == 'add_trans' %}
+						<form role="form" method="post" action="">
+							{% csrf_token %}
+							<fieldset class="form-fieldset">
+								<legend class="form-legend">Add New Transaction</legend>
+								<div class="tim-typo">
+									<p class="text-warning">
+										This page is to add transactions that are not collected from the customer 
+							e.g. late payment charges, cheque bounce charges etc.,
+									</p>
+								</div>
+								<div class="row">
+									<div class="col-md-5">
+										<div class="form-group">
+											<label class="bmd-label-floating">Loan Number</label>
+											{{ transform.loan }}
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-5">
+										<div class="form-group">
+											<label class="bmd-label-floating">Transaction Type</label>
+											{{ transform.transaction_type }}
+										</div>
+									</div>
+									<div class="col-md-1"> </div>
+									<div class="col-md-5">
+										<div class="form-group">
+										  <label class="bmd-label-floating">Due Date</label>
+										  {{ transform.due_date }}
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-5">
+										<div class="form-group">
+											<label class="bmd-label-floating">Total Amount</label>
+											{{ transform.total_amount }}
+										</div>
+									</div>
+									<div class="col-md-1"> </div>
+									<div class="col-md-5">
+										<div class="form-group">
+										  <label class="bmd-label-floating">Debit/Credit</label>
+										  {{ transform.debit_credit }}
+										</div>
+									</div>
+								</div>
+							</fieldset>
+							<div class="row">
+								<div class="col-md-5"></div>
+								<div class="col-md-5">
+									<button type="submit" name="add_trans" class="btn btn-primary pull-left">Add Transaction</button>
+								</div>
+							</div>
+						</form>
+					{% endif %}
+				</div>
+				<!--
+				<div class="tab-pane {% if tab == 'tab_documents' %} active {% endif %}" id="tab_documents">
+					<form role="form" name="Get_Form" method="GET" action="">
+						<fieldset class="form-fieldset">
+							<legend class="form-legend">Loan Documents</legend>
+							<div class="row">
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Loan Number</label>
+										<input type="text" class="form-control" name="loan_no">
+									</div>
+								</div>
+								<div class="col-md-1"> </div>
+								<div class="col-md-5">
+									<div class="form-group">
+										<label class="bmd-label-floating">Document Type</label>
+										<select class="form-select" id="document_type">
+											<option value="W">Welcome Letter</option>
+											<option value="R">Repayment Schedule</option>
+											<option value="S">SOA</option>
+											<option value="T">Tax Invoice</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4"></div>
+								<div class="col-md-6">
+									<button type="submit" name="preview" class="btn btn-primary pull-left">Preview</button>
+									<button type="submit" name="generate" class="btn btn-primary pull-left">Generate</button>
+								</div>
+								<div class="col-md-2"></div>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				-->
+			</div>
+		</div>
+	</div>
+
+      
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+	// Date Format
+	Date.prototype.toInputFormat = function() {
+       var yyyy = this.getFullYear().toString();
+       var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+       var dd  = this.getDate().toString();
+       return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+    };
+	
+	
+	// Standard Function
+    $(document).ready(function() {
+    // Javascript method's body can be found in assets/js/demos.js
+		md.initDashboardPageCharts();
+    });
+  </script>
+
+{% endblock javascripts %}

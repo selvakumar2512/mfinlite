@@ -1,0 +1,164 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Loans {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+	<div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Loan Documents</h4>
+        </div>
+		<div class="card-body">
+			<form role="form" name="Get_Form" method="GET" action="">
+				<fieldset class="form-fieldset">
+					<legend class="form-legend">Loan Documents</legend>
+					<div class="row">
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Loan Number</label>
+								<input type="text" class="form-control" name="loan_no">
+							</div>
+						</div>
+						<div class="col-md-1"> </div>
+						<div class="col-md-5">
+							<div class="form-group">
+								<label class="bmd-label-floating">Document Type</label>
+								<select class="form-select" name="document_type" id="document_type">
+									<option value="W">Welcome Letter</option>
+									<option value="R">Repayment Schedule</option>
+									<option value="S">SOA</option>
+									<option value="T">Tax Invoice</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-5"></div>
+							<div class="col-md-6">
+								<button type="submit" name="preview" class="btn btn-primary pull-left">Preview</button>
+							</div>
+						<div class="col-md-2"></div>
+					</div>
+				</fieldset>
+			</form>
+			{% if action == 'Preview' %}
+				{% if doc_type == 'T' %}
+					<div class="table-responsive">
+						<table class="table" id="translist">
+							<thead class=" text-primary">
+								<th> Loan No </th>
+								<th> Invoice Number </th>
+								<th> Total Amount </th>
+								<th> Dr/Cr </th>
+								<th> Trans. Type </th>
+								<th> Trans. Status </th>
+								<th> Pay Mode </th>
+								<th> Pay Date </th>
+								{% if doc_type == 'T'%}
+									<th> Preview </th>
+								{% endif %}
+							</thead>						
+							<tbody>
+								{% for transaction in loantrans %}
+									<tr>
+										<td> {{ transaction.loan.loan_no }} </td>
+										<td> {{ transaction.invoice_no }} </td>
+										<td> {{ transaction.total_amount }} </td>
+										<td> {{ transaction.get_debit_credit_display }} </td>
+										<td> {{ transaction.get_transaction_type_display }} </td>
+										<td> {{ transaction.get_transaction_status_display }} </td>
+										<td> {{ transaction.get_payment_mode_display }} </td>
+										<td> {{ transaction.payment_date }} </td>
+										<td>									
+											{% if doc_type == 'T' and transaction.transaction_status != 'O' %}
+												<a class="nav-link" onclick="displayInvoice(this);" href="{% url 'loans:loans_receipt' %}?invoice={{ transaction.invoice_no }}">
+													<i class="material-icons">print</i>
+												</a>
+											{% endif %}
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% else %}
+					{% if doc_type == 'W' or doc_type == 'R' or doc_type == 'S' %}
+						<div class="table-responsive">
+							<table class="table" id="translist">
+								<thead class=" text-primary">
+									<th> Loan No </th>
+									<th> Total Amount </th>
+									<th> Inst. Type </th>
+									<th> Total Inst. </th>
+									<th> Due Date </th>
+									<th> Inst. Start </th>
+									<th> Inst. End </th>
+									<th> Preview </th>
+								</thead>						
+								<tbody>
+										<tr>
+											<td> {{ loanobj.loan_no }} </td>
+											<td> {{ loanobj.amount_finance }} </td>
+											<td> {{ loanobj.get_instalment_type_display }} </td>
+											<td> {{ loanobj.total_instalments }} </td>
+											<td> {{ loanobj.due_date }} </td>
+											<td> {{ loanobj.instalment_start }} </td>
+											<td> {{ loanobj.instalment_end }} </td>
+											<td>
+												{% if doc_type == 'W' %}
+													<a class="nav-link" onclick="displayInvoice(this);" href="{% url 'loans:loans_welcome' %}?loan={{ loanobj.loan_no }}">
+														<i class="material-icons">print</i>
+													</a>
+												{% elif doc_type == 'S' %}
+													<a class="nav-link" onclick="displayInvoice(this);" href="{% url 'loans:loans_soa' %}?loan={{ loanobj.loan_no }}">
+														<i class="material-icons">print</i>
+													</a>
+												{% elif doc_type == 'R' %}
+													<a class="nav-link" onclick="displayInvoice(this);" href="{% url 'loans:loans_repay' %}?loan={{ loanobj.loan_no }}">
+														<i class="material-icons">print</i>
+													</a>
+												{% endif %}	
+											</td>
+										</tr>
+								</tbody>
+							</table>
+						</div>
+					{% endif %}
+				{% endif %}				
+			{% endif %}
+		</div>
+	</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+	
+	function displayInvoice(ctl) { 
+	_row = $(ctl).parents("tr");
+	var cols = _row.children("td");
+//	alert($(cols[1]).text());
+	}
+    $(document).ready(function() {
+      //init DateTimePickers
+      md.initFormExtendedDatetimepickers();
+	
+	//$('#translist').DataTable({
+	//	paginate: true,
+	//	searching:true,
+	//	ordering: true,
+	//	pageLength: 10,
+	//	select: true
+
+    // });
+
+    });
+  </script>
+  
+{% endblock javascripts %}
