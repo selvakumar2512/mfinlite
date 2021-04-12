@@ -1,1 +1,1 @@
-web: gunicorn mfinlite.wsgi --log-file -
+web: gunicorn mificraft.wsgi --log-file -
