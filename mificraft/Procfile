@@ -1,0 +1,1 @@
+web: gunicorn mfinlite.wsgi --log-file -
