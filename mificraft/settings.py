@@ -137,13 +137,15 @@ STATICFILES_FINDERS = (
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = [STATIC_DIR,]
-STATICFILES_DIRS = ['/static/',]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = ['/static/',] ### For Heroku
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # STATIC_ROOT = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/media/'
 LOGIN_URL = '/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # print("Stratic Dir", STATIC_DIR)
 # print("Static Root", STATIC_ROOT)

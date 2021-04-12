@@ -1,6 +1,6 @@
 appdirs==1.4.4
 arabic-reshaper==2.1.1
-asgiref>=3.2.10
+asgiref==3.2.10
 Babel==2.9.0
 cairocffi==1.2.0
 CairoSVG==2.5.1
@@ -13,7 +13,7 @@ cssselect2==0.4.1
 dateutils==0.6.7
 defusedxml==0.6.0
 distlib==0.3.1
-django>=3.1.8
+Django==3.1.4
 django-appconf==1.0.4
 django-cors-headers==3.5.0
 django-crequest==2018.5.11
@@ -31,17 +31,17 @@ docopt==0.6.2
 drf-yasg==1.20.0
 filelock==3.0.12
 future==0.18.2
-gunicorn==19.7.1
+gunicorn==20.1.0
 html5lib==1.1
 idna==2.10
 inflection==0.5.1
 itypes==1.2.0
-jinja2>=2.11.3
+Jinja2==2.11.2
 MarkupSafe==1.1.1
 numpy==1.20.1
 packaging==20.4
 pandas==1.2.2
-Pillow>=8.1.1
+Pillow==7.2.0
 pipenv==2020.11.15
 pipreqs==0.4.10
 psycopg2-binary==2.8.6
@@ -70,5 +70,6 @@ virtualenv==20.4.3
 virtualenv-clone==0.5.4
 WeasyPrint==52.2
 webencodings==0.5.1
+whitenoise==5.2.0
 xhtml2pdf==0.2.5
 yarg==0.1.9
